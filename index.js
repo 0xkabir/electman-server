@@ -43,9 +43,16 @@ async function run(){
             response.send(result)
         })
 
+        app.delete('/reviews/:id', async(request, response)=>{
+            const id = request.params.id;
+            console.log(id)
+            const query = {_id:ObjectId(id)}
+            const result = await reviewsCollection.deleteOne(query)
+            response.send(result)
+        })
+
         app.get('/my-reviews', async(request, response)=>{
             const userId = request.query.user;
-            console.log(userId)
             const query = {userId: userId}
             const cursor = reviewsCollection.find(query)
             const result = await cursor.toArray()
