@@ -35,7 +35,6 @@ async function run(){
 
         app.post('/services', async(request, response)=>{
             const service = request.body
-            console.log(service)
             const result = await serviceCollection.insertOne(service)
             response.send(result)
         })
@@ -55,9 +54,28 @@ async function run(){
             response.send(result)
         })
 
+        app.get('/review/:id', async(request, response)=>{
+            const id = request.params.id;
+            const query = {_id: ObjectId(id)}
+            const result = await reviewsCollection.findOne(query)
+            response.send(result)
+        })
+
+        app.put('/reviews/:id', async(request, response)=>{
+            const id = request.params.id;
+            const updatedReview = request.body.updatedReview
+            const filter = {_id: ObjectId(id)}
+            const updateDoc = {
+                $set:{
+                    review: updatedReview
+                }
+            }
+            const result = await reviewsCollection.updateOne(filter, updateDoc)
+            response.send(result)
+        })
+
         app.delete('/reviews/:id', async(request, response)=>{
             const id = request.params.id;
-            console.log(id)
             const query = {_id:ObjectId(id)}
             const result = await reviewsCollection.deleteOne(query)
             response.send(result)
