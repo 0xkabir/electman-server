@@ -24,8 +24,20 @@ async function run(){
                 limit = parseInt(request.query.count)
             }
             const cursor = serviceCollection.find(query)
-            const result = await cursor.limit(limit).toArray()
-            response.send(result) 
+            const result = await cursor.toArray()
+            if(limit !== 0){
+                response.send(result.reverse().slice(0,limit))
+            }
+            else{
+                response.send(result.reverse())
+            }
+        })
+
+        app.post('/services', async(request, response)=>{
+            const service = request.body
+            console.log(service)
+            const result = await serviceCollection.insertOne(service)
+            response.send(result)
         })
 
         app.get('/services/:id', async(request, response)=>{
