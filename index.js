@@ -43,7 +43,7 @@ async function run(){
             response.send(result)
         })
 
-        app.get('/reviews', async(request, response)=>{
+        app.get('/my-reviews', async(request, response)=>{
             const userId = request.query.user;
             console.log(userId)
             const query = {userId: userId}
